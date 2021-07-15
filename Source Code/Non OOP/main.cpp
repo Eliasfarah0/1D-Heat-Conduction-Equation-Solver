@@ -66,7 +66,7 @@ int main() {
 	delete[] numerical;
 
 	cout << "Computation Completed!" << endl;
-	system("PAUSE");;
+	system("PAUSE");
 	return 0;
 }
 
