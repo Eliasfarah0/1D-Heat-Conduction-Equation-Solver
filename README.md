@@ -189,7 +189,7 @@ For free text and source code editors, I recommend using:
   - [Notepadqq](https://notepadqq.com/wp/download/)
   - [Visual Studio Code](https://code.visualstudio.com/Download)
 ### For Windows
-  - [Notepad++](https://notepad-plus-plus.org/)
+  - [Notepad++](https://notepad-plus-plus.org/downloads/)
   - [Visual Studio Code](https://code.visualstudio.com/Download)
 
 ## Source Code Run
