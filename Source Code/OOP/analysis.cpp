@@ -19,6 +19,7 @@
 #include "analysis.h"
 #include <fstream> // To write into a .CSV file
 #include <cmath>
+#include <iomanip>
 using namespace std;
 
 
@@ -108,11 +109,12 @@ void Analysis::printExplicit_duFordFrankel() {
 	solver.setTimeDomain(int(outputTime / deltat));
 	solver.setT_surf(t_surf);
 	solver.setT_init(t_init);*/
-	ofstream outfile("duFortFrankel.csv");
 	Vector v1 = solver.duFortSolve(DufortFirstStepMethod);
+	ofstream outfile("duFortFrankel.csv");
 	if (outfile.is_open()) {
+		outfile << "x (m)" << "," << "T (K)" << endl;
 		for (int i = 0; i < v1.size(); i++) {
-			outfile << v1[i] << endl;
+			outfile << fixed << setprecision(4) << (i * deltax) << "," << v1[i] << endl;
 		}
 		outfile.close();
 	}
@@ -121,11 +123,12 @@ void Analysis::printExplicit_duFordFrankel() {
 void Analysis::printExplicit_richardson() {
 	Explicit solver;
 	solver = initialiseExplicit(solver);
-	ofstream outfile("Richardson.csv");
 	Vector v1 = solver.richardsonSolve();
+	ofstream outfile("Richardson.csv");
 	if (outfile.is_open()) {
+		outfile << "x (m)" << "," << "T (K)" << endl;
 		for (int i = 0; i < v1.size(); i++) {
-			outfile << v1[i] << endl;
+			outfile << fixed << setprecision(4) << (i * deltax) << "," << v1[i] << endl;
 		}
 		outfile.close();
 	}
@@ -137,8 +140,9 @@ void Analysis::printImplicit_laasonen() {
 	Vector v1 = solver.laasonenSolve();
 	ofstream outfile("laasonen.csv");
 	if (outfile.is_open()) {
+		outfile << "x (m)" << "," << "T (K)" << endl;
 		for (int i = 0; i < v1.size(); i++) {
-			outfile << v1[i] << endl;
+			outfile << fixed << setprecision(4) << (i * deltax) << "," << v1[i] << endl;
 		}
 		outfile.close();
 	}
@@ -150,8 +154,9 @@ void Analysis::printImplicit_crankNicolson() {
 	Vector v1 = solver.crankNicolsonSolve();
 	ofstream outfile("crankNicolson.csv");
 	if (outfile.is_open()) {
+		outfile << "x (m)" << "," << "T (K)" << endl;
 		for (int i = 0; i < v1.size(); i++) {
-			outfile << v1[i] << endl;
+			outfile << fixed << setprecision(4) << (i * deltax) << "," << v1[i] << endl;
 		}
 		outfile.close();
 	}
@@ -177,8 +182,9 @@ void Analysis::print_exact_solution() {
 	///write the exact solution and return it as well.
 	ofstream outfile("exact_solution.csv");
 	if (outfile.is_open()) {
+		outfile << "x (m)" << "," << "T (K)" << endl;
 		for (int i = 0; i < v1.size(); i++) {
-			outfile << v1[i] << endl;
+			outfile << fixed << setprecision(4) << (i * deltax) << "," << v1[i] << endl;
 		}
 		outfile.close();
 	}
@@ -195,7 +201,7 @@ Vector Analysis::printErrors(int numerical_scheme) {
 	Implicit impl;
 	impl = initialiseImplicit(impl);
 	
-	// for the numerical scheme chosen, write the errors in a .csv file, and return them as well
+	// for the numerical numerical_scheme chosen, write the errors in a .csv file, and return them as well
 	switch (numerical_scheme) {
 		case 1: {
 			v2 = expl.duFortSolve(DufortFirstStepMethod);
@@ -220,9 +226,69 @@ Vector Analysis::printErrors(int numerical_scheme) {
 	}
 
 	ofstream outfile(file);
-	for (int i = 0; i < v1.size(); i++) {
-		errors[i] = abs(v1[i] - v2[i]);
-		outfile << errors[i] << endl;
+	if (outfile.is_open()) {
+		outfile << "x (m)" << "," << "Error" << endl;
+		for (int i = 0; i < v1.size(); i++) {
+			errors[i] = abs(v1[i] - v2[i]);
+			outfile << (i * deltax) << "," << errors[i] << endl;
+		}
+		outfile.close(); 
 	}
 	return errors;
+}
+
+void Analysis::printTimeFunction(double positionToSee, double timeToSee, int numerical_scheme) {
+	// for the numerical_scheme chosen (int numerical_scheme), evolution of the temperature at the node int(positionToSee/delta x) in time until t=timeToSee
+	string file;
+	int space = int(positionToSee / deltax);
+	int time = int(timeToSee / deltat);
+	Vector v1 = {};
+	Explicit expl;
+	expl = initialiseExplicit(expl);
+	Implicit impl;
+	impl = initialiseImplicit(impl);
+
+	// check wether the node we are looking at is inside the domain
+	if (positionToSee <= thickness) {
+		for (int t = 0; t <= time; t++) {
+			switch (numerical_scheme) {
+				case 1: {
+					file = "timeFunction_duFort.csv";
+					expl.setTimeDomain(t);
+					v1.push_back(expl.duFortSolve(DufortFirstStepMethod)[space]);
+					break;
+				}
+				case 2: {
+					file = "timeFunction_richardson.csv";
+					expl.setTimeDomain(t);
+					v1.push_back(expl.richardsonSolve()[space]);
+					break;
+				}
+				case 3: {
+					file = "timeFunction_laasonen.csv";
+					impl.setTimeDomain(t);
+					v1.push_back(impl.laasonenSolve()[space]);
+					break;
+				}
+				case 4: {
+					file = "timeFunction_crankNicolson.csv";
+					impl.setTimeDomain(t);
+					v1.push_back(impl.crankNicolsonSolve()[space]);
+					break;
+				}
+			}
+		}
+
+		ofstream outfile(file);
+		if (outfile.is_open()) {
+			outfile << "At x = " << positionToSee << endl;
+			outfile << "t (s)" << "," << "T (K)" << endl;
+			for (int i = 0; i < v1.size(); i++) {
+				outfile << (i * deltat) << fixed << setprecision(4) << "," << v1[i] << endl;
+			}
+			outfile.close(); 
+		}
+	}
+	else
+		cout << "The value of x chosen is out of borders!" << endl;
 }
