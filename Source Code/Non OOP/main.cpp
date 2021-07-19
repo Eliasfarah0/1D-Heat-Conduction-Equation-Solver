@@ -373,7 +373,7 @@ int TDMA_Solver(double* lower_diag, double* main_diag, double* upper_diag, doubl
 void Print_Solution (Vector v1, Vector v2, Vector v3, Vector v4, Vector v5, int nodes, double delta_x) {
 	ofstream outfile ("1D_Heat_Equation_Solution.csv");
 	if (outfile.is_open()) {
-		outfile << "x (m)" << "," << "Exact_Solution" << "," << "DuFort_Frankel_Explicit_Scheme" << "," << "Richardson_Explicit_Scheme" << "," << "Laasonen_Simple_Implicit_Scheme" << "," << "Crank_Nicholson_Implicit_Scheme" << endl;	
+		outfile << "x (m)" << "," << "T (K) Exact_Solution" << "," << "T (K) DuFort_Frankel_Explicit_Scheme" << "," << "T (K) Richardson_Explicit_Scheme" << "," << "T (K) Laasonen_Simple_Implicit_Scheme" << "," << "T (K) Crank_Nicholson_Implicit_Scheme" << endl;
 		for (int i = 0; i < nodes; i++) {
 			outfile << fixed << setprecision(4) << (i * delta_x) << "," << v1[i] << "," << v2[i] << "," << v3[i] << "," << v4[i] << "," << v5[i] << endl;
 		}
