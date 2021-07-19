@@ -35,10 +35,18 @@ int main()
 	HeatEquation.printImplicit_crankNicolson();
 	
 	// Absolute Errors for All Numerical Schemes With Respect to the Exact Analytical Solution
+	// HeatEquation.printErrors(numerical_scheme);
 	HeatEquation.printErrors(1);
 	HeatEquation.printErrors(2);
 	HeatEquation.printErrors(3);
 	HeatEquation.printErrors(4);
+	
+	// Numerical solution at a specified location, until a specified time and using a specified numerical scheme
+	// HeatEquation.printTimeFunction(positionToSee, timeToSee, numerical_scheme);
+	HeatEquation.printTimeFunction(5, 0.5, 1);
+	HeatEquation.printTimeFunction(10, 0.5, 2);
+	HeatEquation.printTimeFunction(15.5, 0.5, 3);
+	HeatEquation.printTimeFunction(20, 0.5, 4);
 
 	cout << "Computation Completed!" << endl;
 	system("PAUSE");
