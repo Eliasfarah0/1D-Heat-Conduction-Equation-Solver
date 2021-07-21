@@ -151,7 +151,7 @@ sudo apt-get install manpages-dev   # To install the manual pages about using GN
 Finally, to validate that the GCC compiler and GDB debugger are installed successfully, and to verify/display the installation version along with the directory location of the compiler, run the commands:
 ```bash
 whereis gcc
-gcc --version
+gcc --version # or g++ --version
 gdb --version
 ```
 
@@ -179,7 +179,7 @@ To run C/C++ compiler on Windows, follow the next steps:
 
     - To check that your Mingw-w64 tools are correctly installed and available, open a new Command Prompt (cmd) and type:
       ```cmd
-      g++ --version
+      gcc --version &:: or g++ --version
       gdb --version
       ```
 
