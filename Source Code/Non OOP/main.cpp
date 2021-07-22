@@ -145,7 +145,7 @@ Vector Richardson_Explicit_Scheme(double** numerical, double delta_x, double del
 
 	for (int n = 0; n <= (output_time / delta_t); n++) {
 		numerical[0][n] = T_sur;   // BC at 0 and all n (node #0)
-		numerical[nodes - 1][n] = T_sur; // BC at 31 and all n (node #100)
+		numerical[nodes - 1][n] = T_sur; // BC at 31 and all n (node #last_node)
 	}
 
 	for (int i = 1; i < (nodes - 1); i++) { // Initial Conditions #1
