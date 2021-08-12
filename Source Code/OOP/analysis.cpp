@@ -32,7 +32,7 @@ Analysis::Analysis(double Diff, double dx, double dt, double L, double output_Ti
 	(*this).outputTime            = output_Time;   // or this->outputTime            = output_Time
 	(*this).t_surf                = T_surf;        // or this->t_surf                = T_surf
 	(*this).t_init                = T_init;        // or this->t_init                = T_init
-	(*this).DufortFirstStepMethod = choice_duFort; // or this->DufortFirstStepMethod = choice_duFort // This value can be changed in the main function
+	(*this).DufortFirstStepMethod = choice_duFort; // or this->DufortFirstStepMethod = choice_duFort
 }
 
 // Get & Set methods
@@ -72,7 +72,7 @@ void  Analysis::setDufortFirstStepMethod(int choice) {
 /* similar to:
 type Analysis::initialiseImplicit(type impl) {
 	...;
-	return impl;
+	return type;
 }*/
 Implicit Analysis::initialiseImplicit(Implicit impl) {
 	impl.setDeltat(deltat);
